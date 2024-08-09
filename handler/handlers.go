@@ -18,7 +18,7 @@ func (s *Server) CreateTodoService(ctx context.Context, in *pb.TodoRequest) (*pb
 }
 
 func (s *Server) DeleteTodoService(ctx context.Context, in *pb.TodoQuery) (*pb.Todo, error) {
-	return executeDeleteStatement(int(in.Id))
+	return executeDeleteStatement(in.Id)
 }
 
 func (s *Server) GetAllTodosService(in *pb.Null, stream grpc.ServerStreamingServer[pb.Todo]) error {
@@ -33,7 +33,7 @@ func (s *Server) GetAllTodosService(in *pb.Null, stream grpc.ServerStreamingServ
 }
 
 func (s *Server) GetTodoByIDService(ctx context.Context, in *pb.TodoQuery) (*pb.Todo, error) {
-	todos, err := executeSelectStatement(fmt.Sprintf("SELECT * FROM todo where id = %d", in.Id))
+	todos, err := executeSelectStatement(fmt.Sprintf("SELECT * FROM todo where id = %s", in.Id))
 	if err != nil {
 		return nil, err
 	}

@@ -58,10 +58,10 @@ func executeInsertStatement(description string) (*pb.Todo, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Todo{Id: int32(lastInsertId), Description: description}, nil
+	return &pb.Todo{Id: string(lastInsertId), Description: description}, nil
 }
 
-func executeDeleteStatement(id int) (*pb.Todo, error) {
+func executeDeleteStatement(id string) (*pb.Todo, error) {
 	db, err := newDB()
 	if err != nil {
 		return nil, err
@@ -71,7 +71,7 @@ func executeDeleteStatement(id int) (*pb.Todo, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &pb.Todo{Id: int32(id), Description: desc}, nil
+	return &pb.Todo{Id: string(id), Description: desc}, nil
 }
 func executeUpdateStatement(in *pb.Todo) error {
 	db, err := newDB()

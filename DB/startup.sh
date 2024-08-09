@@ -1,0 +1,1 @@
+psql -U gopher todo < /docker-entrypoint-initdb.d/CreateDB.sql;

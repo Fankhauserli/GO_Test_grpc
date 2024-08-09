@@ -1,46 +1,24 @@
-package handlers
+package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"log"
-	"net"
 
 	pb "github.com/Fankhauserli/GO_Test_grpc/services/models"
 	"google.golang.org/grpc"
 )
 
-type server struct {
-	pb.UnimplementedToDoServer
-}
-
-func newServer(bindAddress int) (*grpc.Server, error) {
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", bindAddress))
-	if err != nil {
-		return nil, errors.New(fmt.Sprintf("failed to listen on port %d: %v", bindAddress, err))
-	}
-
-	s := grpc.NewServer()
-	pb.RegisterToDoServer(s, &server{})
-	log.Printf("gRPC server listening at %v", lis.Addr())
-	if err := s.Serve(lis); err != nil {
-		return nil, errors.New(fmt.Sprintf("failed to serve: %v", err))
-	}
-	return s, nil
-}
-
-func (s *server) createTodoService(ctx context.Context, in *pb.TodoRequest) (*pb.TodoResponse, error) {
-	todo, err := executeInsertStatement(in.Description)
+func (s *models.server) CreateTodoService(ctx context.Context, in *pb.TodoRequest) (*pb.TodoResponse, error) {
+	todo, err := executeInsertStatement(in.Description, s.db)
 	return &pb.TodoResponse{Id: todo.Id}, err
 }
 
-func (s *server) deleteTodoService(ctx context.Context, in *pb.TodoQuery) (*pb.Todo, error) {
-	return executeDeleteStatement(int(in.Id))
+func (s *models.server) DeleteTodoService(ctx context.Context, in *pb.TodoQuery) (*pb.Todo, error) {
+	return executeDeleteStatement(int(in.Id), s.db)
 }
 
-func (s *server) getAllTodosService(in *pb.Null, stream grpc.ServerStreamingServer[pb.Todo]) error {
-	todos, err := executeSelectStatement("SELECT * FROM todo")
+func (s *models.server) GetAllTodosService(in *pb.Null, stream grpc.ServerStreamingServer[pb.Todo]) error {
+	todos, err := executeSelectStatement("SELECT * FROM todo", s.db)
 	if err != nil {
 		return err
 	}
@@ -50,16 +28,16 @@ func (s *server) getAllTodosService(in *pb.Null, stream grpc.ServerStreamingServ
 	return nil
 }
 
-func (s *server) getTodoByIDService(ctx context.Context, in *pb.TodoQuery) (*pb.Todo, error) {
-	todos, err := executeSelectStatement(fmt.Sprintf("SELECT * FROM todo where id = %d", in.Id))
+func (s *models.server) GetTodoByIDService(ctx context.Context, in *pb.TodoQuery) (*pb.Todo, error) {
+	todos, err := executeSelectStatement(fmt.Sprintf("SELECT * FROM todo where id = %d", in.Id), s.db)
 	if err != nil {
 		return nil, err
 	}
 	return &todos[0], nil
 }
 
-func (s *server) updateTodoService(ctx context.Context, in *pb.Todo) (*pb.Todo, error) {
-	err := executeUpdateStatement(in)
+func (s *models.server) UpdateTodoService(ctx context.Context, in *pb.Todo) (*pb.Todo, error) {
+	err := executeUpdateStatement(in, s.db)
 	if err != nil {
 		return nil, err
 	}

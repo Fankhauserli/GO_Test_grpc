@@ -24,16 +24,16 @@ message TodoRequest {
 
 // The response message containing the greetings
 message Todo {
-  int64 Id = 1;
+  int32 Id = 1;
   string Description = 2;
 }
 
 
 message TodoResponse {
-  int64 Id = 1;
+  int32 Id = 1;
 }
 
 // the query by id
 message TodoQuery {
-  int64 Id = 1;
+  int32 Id = 1;
 }

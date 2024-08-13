@@ -8,18 +8,29 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
+  frontend:
+    build:
+      context: ../GO_Htmx_test
+    ports: 
+      - 8080:8080
+    environment:
+      BackendHost: server
+      BackendPort: 20002
+    depends_on:
+      server:
+        condition: service_started
+    
   server:
     build:
       context: .
       target: final
     ports:
-      - 54321:54321
+      - 20002:20002
     environment:
       DBUser: gopher
       DBPassword: golang1234
       DBPort: 5432
       DBHost: db
-
 
     depends_on:
       db:

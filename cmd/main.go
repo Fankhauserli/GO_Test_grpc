@@ -11,9 +11,9 @@ import (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 54321))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 20002))
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to listen on port %d: %v", 54321, err))
+		log.Fatal(fmt.Errorf("failed to listen on port %d: %v", 20002, err))
 	}
 
 	s := grpc.NewServer()

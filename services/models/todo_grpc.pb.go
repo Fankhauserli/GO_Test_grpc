@@ -29,10 +29,7 @@ const (
 // ToDoClient is the client API for ToDo service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-//
-// The greeting service definition.
 type ToDoClient interface {
-	// Sends a greeting
 	CreateTodoService(ctx context.Context, in *TodoRequest, opts ...grpc.CallOption) (*TodoResponse, error)
 	DeleteTodoService(ctx context.Context, in *TodoQuery, opts ...grpc.CallOption) (*Todo, error)
 	GetAllTodosService(ctx context.Context, in *Null, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Todo], error)
@@ -110,10 +107,7 @@ func (c *toDoClient) UpdateTodoService(ctx context.Context, in *Todo, opts ...gr
 // ToDoServer is the server API for ToDo service.
 // All implementations must embed UnimplementedToDoServer
 // for forward compatibility.
-//
-// The greeting service definition.
 type ToDoServer interface {
-	// Sends a greeting
 	CreateTodoService(context.Context, *TodoRequest) (*TodoResponse, error)
 	DeleteTodoService(context.Context, *TodoQuery) (*Todo, error)
 	GetAllTodosService(*Null, grpc.ServerStreamingServer[Todo]) error

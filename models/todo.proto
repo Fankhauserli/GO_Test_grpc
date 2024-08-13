@@ -4,9 +4,7 @@ option go_package = "github.com/Fankhauserli/GO_Test_grpc/TodoGrpc";
 
 package TodoGrpc;
 
-// The greeting service definition.
 service toDo {
-  // Sends a greeting
   rpc createTodoService (TodoRequest) returns (TodoResponse) {}
   rpc deleteTodoService (TodoQuery) returns (Todo) {}
   rpc getAllTodosService (null) returns (stream Todo) {}
@@ -17,15 +15,15 @@ service toDo {
 message null {}
 
 
-// The request message containing the user's name.
 message TodoRequest {
   string Description = 1;
+  string Titel = 2;
 }
 
-// The response message containing the greetings
 message Todo {
   string Id = 1;
   string Description = 2;
+  string Titel = 3;
 }
 
 
@@ -33,7 +31,6 @@ message TodoResponse {
   string Id = 1;
 }
 
-// the query by id
 message TodoQuery {
   string Id = 1;
 }

@@ -12,7 +12,7 @@ services:
     build:
       context: ../GO_Htmx_test
     ports: 
-      - 8080:8080
+      - 42069:42069
     environment:
       BackendHost: server
       BackendPort: 20002

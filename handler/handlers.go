@@ -13,7 +13,7 @@ type Server struct {
 }
 
 func (s *Server) CreateTodoService(ctx context.Context, in *pb.TodoRequest) (*pb.TodoResponse, error) {
-	todo, err := executeInsertStatement(in.Description)
+	todo, err := executeInsertStatement(in.Description, in.Titel)
 	return &pb.TodoResponse{Id: todo.Id}, err
 }
 
